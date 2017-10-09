@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>GrowthPlug Test</title>
+	<style type="text/css">
+		body{
+			background-color: #d0ddf2;
+		}
+		#d {
+		  position: absolute;
+		  margin: -100px 0 0 -150px;
+		  top: 50%;
+		  left: 50%;
+		}
+	</style>
+</head>
+<body>
+	<script>
+
+	function checkLoginState() {
+    FB.getLoginStatus(function(response) {
+      statusChangeCallback(response);
+    });
+  	}
+
+  	function statusChangeCallback(response) {
+  		if(response.status=='connected') {
+  			var accessToken=response.authResponse.accessToken;
+  			document.getElementById("accTok").value=accessToken;
+  			document.getElementById("at").submit();
+  		}
+  		// else {
+  		// 	alert('Please login to continue!!!');
+  		// }
+  	}
+
+	  window.fbAsyncInit = function() {
+	    FB.init({
+	      appId            : '1313741178694228',
+	      autoLogAppEvents : true,
+	      xfbml            : true,
+	      version          : 'v2.10'
+	    });
+	    FB.AppEvents.logPageView();
+	  };
+
+	  (function(d, s, id){
+	     var js, fjs = d.getElementsByTagName(s)[0];
+	     if (d.getElementById(id)) {return;}
+	     js = d.createElement(s); js.id = id;
+	     js.src = "https://connect.facebook.net/en_US/sdk.js";
+	     fjs.parentNode.insertBefore(js, fjs);
+	   }(document, 'script', 'facebook-jssdk'));
+
+
+	  
+</script>
+<div id='d'>
+	<p> Please click on the fb button to continue...</p>
+	<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+	</fb:login-button>
+</div>
+	<form id='at' action="/pages" method="post">{% csrf_token %}
+		<input id="accTok" type="hidden" name="token">
+
+	</form>
+
+</body>
+</html>

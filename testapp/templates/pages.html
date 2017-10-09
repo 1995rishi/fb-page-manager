@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My Pages</title>
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    
+    <style type="text/css">
+      caption {
+        background-color: #d0ddf2;
+        
+        font-weight: bold;
+      }
+    </style>
+</head>
+<body>
+<nav>
+    <div class="nav-wrapper teal">
+      <a href="#" id="title" class="brand-logo"></a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a id="logout">Logout</a></li>
+      </ul>
+    </div>
+  </nav>
+<div class=container">
+<table id="tabl" class="bordered">
+        <caption><h5>Listings</h5></caption>
+        <thead>
+          <tr>
+              <th>Source</th>
+              <th>Name</th>
+              <th>Address</th>
+              <th>Phone</th>
+              <th>Rating</th>
+              <th>Listed</th>
+              <th>Status</th>
+              <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>Google</td>
+            <td>Test</td>
+            <td>Delhi</td>
+            <td>111-111-1111</td>
+            <td>3/5</td>
+            <td>No</td>
+            <td><i class="material-icons red-text text-darken-4">clear</i></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Yahoo!</td>
+            <td>Test</td>
+            <td>Delhi</td>
+            <td>111-111-1111</td>
+            <td>4/5</td>
+            <td>No</td>
+            <td><i class="material-icons red-text text-darken-4">clear</i></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Yelp</td>
+            <td>Test</td>
+            <td>Delhi</td>
+            <td>111-111-1111</td>
+            <td>3/5</td>
+            <td>No</td>
+            <td><i class="material-icons red-text text-darken-4">clear</i></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+<p align='center' id="message"></p>
+  <!-- Modal Structure -->
+  <div id="modal1" class="modal modal-fixed-footer">
+    <div class="modal-content">
+      <h4>Page Details</h4>
+      <p><div class="row">
+    <form class="col s12" id="updateData" action="/updatePageDetals method="post">
+      <div class="row">
+        <div class="input-field col s12">
+          <input disabled placeholder="Name" id="name" type="text" class="validate">
+          <label for="name">Name</label>
+        </div>
+        <div class="row">
+        <div class="input-field col s12">
+          <input disabled id="category" type="text" placeholder="Category" class="validate">
+          <label for="category">Category</label>
+        </div>
+      </div>
+        <div class="input-field col s12">
+          <input id="phone" type="text" class="validate" placeholder="Phone">
+          <label for="phone">Phone</label>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="general_info" type="text" class="validate" placeholder="general_info">
+          <label for="general_info">General Info</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="about" type="text" class="validate" placeholder="About">
+          <label for="about">About</label>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col s12">
+          <div class="input-field inline">
+            <input id="emails" type="email" class="validate" placeholder="email">
+            <label for="emails" data-error="wrong" data-success="right">Email</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="bio" type="text" class="validate" placeholder="Bio">
+          <label for="bio">bio</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input disabled id="location" type="text" class="validate" placeholder="Location" disabled>
+          <label for="location">Location</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="website" type="text" class="validate" placeholder="Website">
+          <label for="website">Website</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="description" type="text" class="validate" placeholder="Description">
+          <label for="description">Description</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="company_overview" type="text" class="validate" placeholder="Company Overview">
+          <label for="company_overview">Company Overview</label>
+        </div>
+      </div>
+    
+          <input id="id" type="text" class="validate" hidden>
+          <input id="pageToken" type="text" hidden>
+       
+    </form>
+  </div>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-action waves-effect waves-green btn-flat" id="update">Update</a>
+    </div>
+  </div>
+
+
+ <script>
+  
+    var x={{ pages|safe }};
+    var y={{ personal|safe }};
+    // var cf={{ csrf_token }};
+    // console.log(csrf);
+    document.getElementById("title").innerHTML='Welcome, '+y.name;
+    x=x.data;
+    console.log(x);
+    if(x.length==0)
+    {
+      document.getElementById("message").innerHTML="You have no facebook pages under you account!!!0;"
+    }
+    $.each(x, function (i, v) {
+                //list += '<li class="page" id="'+i+'">' + '<a>' + v.name + '</a></li>'
+                // console.log(v);
+                var button='<td><a href="#modal1" class="waves-effect waves-light btn page modal-trigger" id="' + i + '">Update</a></td></tr>';
+                var name='<td>' + v.name +'</td>';
+                var ph='<td>'+ v.phone + '</td>';
+                var location='<td>' + v.location+'</td>';
+                var row='<tr><td>Facebook</td>'+name+'<td>Delhi</td><td>111-111-1111</td><td>3/5</td><td>No</td><td><i class="material-icons green-text text-darken-4">check</i></td>' + button;
+                $('#tabl tr:last').after(row);
+                }); 
+
+            
+     window.fbAsyncInit = function() {
+      FB.init({
+        appId            : '1313741178694228',
+        autoLogAppEvents : true,
+        xfbml            : true,
+        version          : 'v2.10'
+      });
+      FB.AppEvents.logPageView();
+    };
+
+    (function(d, s, id){
+       var js, fjs = d.getElementsByTagName(s)[0];
+       if (d.getElementById(id)) {return;}
+       js = d.createElement(s); js.id = id;
+       js.src = "https://connect.facebook.net/en_US/sdk.js";
+       fjs.parentNode.insertBefore(js, fjs);
+     }(document, 'script', 'facebook-jssdk'));
+    </script>
+
+<script type="text/javascript">$(document).ready(function(){
+
+    $('#logout').click(function() {
+      console.log('kokpk');
+
+      FB.getLoginStatus(function(response) {
+      
+        if (response && response.status === 'connected') {
+          
+            FB.logout(function(response) {
+                document.location='/';
+            });
+        }
+        else
+        {
+          document.location='/';
+        }
+    });
+
+    });
+
+
+    // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
+    $('.page').click(function() {
+      var id = $(this).attr('id');
+      
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          console.log(this.responseText);
+          var res=JSON.parse(this.responseText);
+          $.each(res, function(key, value) {
+              if(key=='location')
+              {
+                var temp='';
+                $.each(res.location, function(k,v) {
+                  temp+=k+': '+v+' ';
+                });
+                document.getElementById(key).value=temp;
+              }
+              else{
+              document.getElementById(key).value=value;
+            }
+          });
+          document.getElementById("pageToken").value=x[parseInt(id)].access_token;
+        }
+      };
+      var parm='pageId='+x[parseInt(id)].id + '&pageToken=' + x[parseInt(id)].access_token + '&csrfmiddlewaretoken=' + '{{csrf_token}}';
+      // console.log(parm);
+      xhttp.open("POST", "/getPageDetails", false);
+      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xhttp.send(parm);
+
+    });
+   
+    $('#update').click(function() {
+
+      //var dr={'access_token':document.getElementById("pageToken").value, 'pageId':document.getElementById("id").value, 'csrfmiddlewaretoken': '{{ csrf_token}}'};
+      var d={'csrfmiddlewaretoken': '{{ csrf_token}}','access_token':document.getElementById("pageToken").value, 'pageId':document.getElementById("id").value};
+      var c=0;
+      var flag=1;
+      if(document.getElementById("phone").value != "")
+      {
+        if(document.getElementById("phone").value.length==10 && !isNaN(document.getElementById("phone").value))
+        {
+          d['phone']= document.getElementById("phone").value;
+          c+=1;
+        }
+        else
+        {
+          alert("please enter a valid 10 digit phone number!!!");
+          flag=0;
+        }
+      }
+      if(document.getElementById("general_info").value != "")
+      {
+          c+=1;
+          d['general_info']= document.getElementById("general_info").value; 
+      }
+      if(document.getElementById("about").value != "")
+      {
+          c+=1;
+          d['about']= document.getElementById("about").value; 
+      }
+      if(document.getElementById("bio").value != "")
+      {
+          c+=1;
+          d['bio']= document.getElementById("bio").value; 
+      }
+      if(document.getElementById("website").value != "")
+      {
+        var re = /^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/;
+        if(re.test(document.getElementById("website").value))
+        {
+          c+=1;
+          d['website']= document.getElementById("website").value;
+        }
+        else
+        {
+          alert("please enter a valid website!!!");
+          flag=0;
+        }
+      }
+      if(document.getElementById("emails").value != "")
+      {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if(re.test(document.getElementById("emails").value))
+        {
+          c+=1;
+          d['emails']= [document.getElementById("emails").value];
+        }
+        else
+        {
+          alert("please enter a valid email!!!");
+          flag=0;
+        }
+      }
+      if(document.getElementById("description").value != "")
+      {
+          c+=1;
+          d['description']= document.getElementById("description").value; 
+      }
+      if(document.getElementById("company_overview").value != "")
+      {
+          c+=1;
+          d['company_overview']= document.getElementById("company_overview").value; 
+      }
+      console.log(d);
+      d = $.param(d);
+      console.log(d);
+      if(c!=0 && flag!=0)
+      {
+       var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            var r=JSON.parse(this.responseText);
+            console.log(r);
+            if(r['success'])
+            {
+              alert('done');
+            }
+            else
+            {
+              alert(r['error']['message']);
+            }
+          }
+        };
+  
+        xhttp.open("POST", "/updatePageDetails", true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send(d);
+      }
+
+      
+    });
+
+    $('#modal1').modal();
+  });</script>
+
+ 
+</body>
+</html>
