@@ -34,6 +34,7 @@ def updatePageDetails(request):
 	d={}
 	pageToken=request.POST.get("access_token",'')
 	pageId=request.POST.get("pageId",'')
+	d1={}
 	d['access_token']=pageToken
 	if request.POST.get("phone") is not None:
 		d['phone']=request.POST.get("phone",'')
@@ -51,10 +52,25 @@ def updatePageDetails(request):
 		d['description']=request.POST.get("description",'')
 	if request.POST.get("company_overview") is not None:
 		d['company_overview']=request.POST.get("company_overview",'')
+	if request.POST.get("lname") is not None:
+		d1['name']=request.POST.get("lname")
+	if request.POST.get("city") is not None:
+		d1['city']=request.POST.get("city")
+	if request.POST.get("state") is not None:
+		d1['state']=request.POST.get("state")
+	if request.POST.get("country") is not None:
+		d1['country']=request.POST.get("country")
+	if request.POST.get("street") is not None:
+		d1['street']=request.POST.get("street")
+	if request.POST.get("zip") is not None:
+		d1['zip']=request.POST.get("zip")
 			
+	# d['location']=d1
 	print(d)
 	header='OAuth ' + pageToken
 	url="https://graph.facebook.com/"+pageId
+	urll=url+"/location"
+	details1=call('POST', url, data=d1, headers={"Authorization":header})
 	details=call('POST', url,data=d, headers={"Authorization": header})
 	return HttpResponse(json.dumps(details.json()))
 

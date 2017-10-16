@@ -57,7 +57,7 @@
 </script>
 <div id='d'>
 	<p> Please click on the fb button to continue...</p>
-	<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+	<fb:login-button scope="public_profile,email,manage_pages" onlogin="checkLoginState();">
 	</fb:login-button>
 </div>
 	<form id='at' action="/pages" method="post">{% csrf_token %}
